@@ -93,8 +93,8 @@ int buildEncodingTree(int nextFree) {
     // 1. Create a MinHeap object.
     MinHeap heap;
     // 2. Push all leaf node indices into the heap.
-    for (int i = 0; i < 26; ++i) {
-        heap.push(charArr[i],weightArr);
+    for (int i = 0; i < nextFree; ++i) {
+        heap.push(i,weightArr);
     }
 
     // 3. While the heap size is greater than 1:
@@ -105,18 +105,18 @@ int buildEncodingTree(int nextFree) {
     while (heap.size > 1) {
         int var1 = heap.pop(weightArr);
         int var2 = heap.pop(weightArr);
-
-
-
-
-
-
-
+        int parent = nextFree - 1;
+        weightArr[parent] = weightArr[var1] + weightArr[var2];
+        leftArr[parent] = var1;
+        rightArr[parent] = var2;
+        heap.push(parent, weightArr);
+        nextFree++;
     }
     // 4. Return the index of the last remaining node (root)
-    return 0;
-    return -1; // placeholder
+    return nextFree;
 }
+
+
 
 // Step 4: Use an STL stack to generate codes
 void generateCodes(int root, string codes[]) {
@@ -124,6 +124,12 @@ void generateCodes(int root, string codes[]) {
     // Use stack<pair<int, string>> to simulate DFS traversal.
     // Left edge adds '0', right edge adds '1'.
     // Record code when a leaf node is reached.
+    stack<pair<int,string>> stack;
+    stack.push({root,""});
+    while (!stack.empty()) {
+        pair<int,string> top = stack.top();
+        stack.pop();
+    }
 }
 
 // Step 5: Print table and encoded message
