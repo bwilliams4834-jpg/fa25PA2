@@ -124,6 +124,13 @@ void generateCodes(int root, string codes[]) {
     // Use stack<pair<int, string>> to simulate DFS traversal.
     // Left edge adds '0', right edge adds '1'.
     // Record code when a leaf node is reached.
+
+    //checks if there is only root in the tree and sets the code to 0
+    if (leftArr[root] == -1 && rightArr[root] == -1) {
+        char ch = charArr[root];
+        codes[ch - 'a'] = "0";
+        return;
+    }
     stack<pair<int,string>> stack;
     stack.push({root,""});
     while (!stack.empty()) {
