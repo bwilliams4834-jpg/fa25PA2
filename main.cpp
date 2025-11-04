@@ -105,7 +105,7 @@ int buildEncodingTree(int nextFree) {
     while (heap.size > 1) {
         int var1 = heap.pop(weightArr);
         int var2 = heap.pop(weightArr);
-        int parent = nextFree - 1;
+        int parent = nextFree;
         weightArr[parent] = weightArr[var1] + weightArr[var2];
         leftArr[parent] = var1;
         rightArr[parent] = var2;
@@ -113,7 +113,7 @@ int buildEncodingTree(int nextFree) {
         nextFree++;
     }
     // 4. Return the index of the last remaining node (root)
-    return nextFree;
+    return heap.pop(weightArr);
 }
 
 
@@ -129,6 +129,21 @@ void generateCodes(int root, string codes[]) {
     while (!stack.empty()) {
         pair<int,string> top = stack.top();
         stack.pop();
+        int var = top.first;
+        string code = top.second;
+        //checks for leaf node
+        if (leftArr[var] == -1 && rightArr[var] == -1) {
+            char ch = charArr[var];
+            if (ch >= 'a' && ch <= 'z') {
+                codes[ch - 'a'] = code;
+            }
+        }
+        else {
+            stack.push({leftArr[var], code + "0" });
+            stack.push({rightArr[var], code + "1" });
+
+        }
+
     }
 }
 
